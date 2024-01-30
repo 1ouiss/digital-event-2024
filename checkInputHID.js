@@ -23,11 +23,13 @@ function displayConnectedDevices() {
   );
   return devicePaths;
 }
-function showCombination(combinationPlayer, levelPlayer) {
+async function showCombination(combinationPlayer, levelPlayer) {
   console.log("Niveau actuel : ", levelPlayer);
   console.log("Combinaison à reproduire : ");
-  combinationPlayer.forEach((element) => {
-    console.log(element);
+  combinationPlayer.forEach((element, index) => {
+    setTimeout(() => {
+      console.log(element);
+    }, (index + 1) * 1000);
   });
 }
 
@@ -76,12 +78,6 @@ function readControllerInput(device) {
   };
 
   console.log("En attente d'input...");
-
-  console.log("Player 1 : ");
-  showCombination(combinationPlayer1, levelPlayer1);
-
-  console.log("Player 2 : ");
-  showCombination(combinationPlayer2, levelPlayer2);
 
   newDevice.on("data", (data) => {
     // console.log(data);
@@ -211,5 +207,15 @@ function readControllerInput(device) {
 const devicePaths = displayConnectedDevices();
 console.log("devicePaths:", devicePaths);
 
+const showAllCobination = async () => {
+  console.log("Player 1 : ");
+  await showCombination(combinationPlayer1, levelPlayer1);
+
+  console.log("Player 2 : ");
+  await showCombination(combinationPlayer2, levelPlayer2);
+};
+
 readControllerInput(devicePaths[0]);
 readControllerInput(devicePaths[1]);
+
+showAllCobination();
