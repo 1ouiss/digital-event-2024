@@ -1,32 +1,15 @@
 const easymidi = require("easymidi");
 
-const availableInputs = easymidi.getInputs();
-console.log("Périphériques MIDI disponibles :", availableInputs);
+const input = new easymidi.Input("network_test", false);
+const output = new easymidi.Output("Réseau Session 1", false);
 
-// Créez une entrée MIDI en utilisant le nom de votre périphérique MIDI
-const input = new easymidi.Input("IAC MIDI Virtual Bus 2");
-let i = 0;
-// Écoutez les messages MIDI entrants
+const availableOutputs = easymidi.getOutputs();
+
 input.on("noteon", (msg) => {
-  // if (msg.note === 60 && msg.velocity === 80) {
-  //   console.log("Note ON:", msg.note, "Vélocité:", msg.velocity);
-  //   console.log("-------");
-  //   console.log(i);
-  //   i++;
-  // }
-
-  console.log(i);
-  i++;
-});
-
-// input.on("noteoff", (msg) => {
-//   console.log("Note OFF:", msg.note, "Vélocité:", msg.velocity);
-// });
-
-// Ajoutez d'autres écouteurs pour d'autres types de messages MIDI si nécessaire
-
-// Gérez la fermeture du programme
-// process.on("SIGINT", () => {
-//   input.close();
-//   process.exit();
-// });
+  console.log(availableOutputs)
+    output.send("noteon", {
+        note: msg.note,
+        velocity: msg.velocity,
+        channel: 3,
+    });
+})
